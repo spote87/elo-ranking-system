@@ -1,13 +1,14 @@
 import com.elo.ranking.dao.PlayersDataReader;
 import com.elo.ranking.dao.PlayersFileDataReader;
 import com.elo.ranking.exception.EloRankingSystemException;
-import com.elo.ranking.model.PlayerRank;
-import com.elo.ranking.model.RankingRequest;
+import com.elo.ranking.exception.InvalidPlayerNameException;
+import com.elo.ranking.exception.PlayerNotFoundException;
+import com.elo.ranking.model.PlayerScoreCard;
 import com.elo.ranking.service.RankService;
 import com.elo.ranking.service.RankServiceImpl;
 import com.elo.ranking.service.ScoreService;
 import com.elo.ranking.service.ScoreServiceImpl;
-import com.elo.ranking.strategy.UserRankingStrategy;
+import com.elo.ranking.strategy.PlayerRankingStrategy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
  * @author Shivaji Pote
  */
 @ExtendWith(MockitoExtension.class)
-public class UserRankingStrategyTest {
+public class PlayerRankingStrategyTest {
 
     private final RankService rankingService = Mockito.mock(RankServiceImpl.class);
 
@@ -35,45 +36,34 @@ public class UserRankingStrategyTest {
     private final PlayersDataReader playersDataReader = Mockito.mock(PlayersFileDataReader.class);
 
     @InjectMocks
-    private UserRankingStrategy userRankingStrategy;
+    private PlayerRankingStrategy userRankingStrategy;
 
-    @Test
-    public void testExecute_ReturnsRankingsOfAllPlayers() throws EloRankingSystemException {
-        when(scoreService.getAllScores()).thenReturn(mockedPlayerScoreMap());
-        when(rankingService.getPlayerRank(Mockito.eq(2), anyMap())).thenReturn(1);
-        when(rankingService.getPlayerRank(Mockito.eq(8), anyMap())).thenReturn(1);
-        when(rankingService.getPlayerRank(Mockito.eq(1), anyMap())).thenReturn(2);
-        when(rankingService.getPlayerRank(Mockito.eq(6), anyMap())).thenReturn(2);
-        when(rankingService.getPlayerRank(Mockito.eq(3), anyMap())).thenReturn(3);
-        when(playersDataReader.byId(Mockito.eq(1))).thenReturn(mockedPlayer(1));
-        final RankingRequest request = new RankingRequest();
-        final List<PlayerRank> playerRanks = userRankingStrategy.execute(request);
-        assertNotNull(playerRanks);
-        assertEquals(6, playerRanks.size());
-    }
 
     @Test
     public void testExecute_ReturnsRankingOfSpecifiedPlayer() throws EloRankingSystemException {
-        when(scoreService.getAllScores()).thenReturn(mockedPlayerScoreMap());
+        when(scoreService.getPlayerScores()).thenReturn(mockedPlayerScoreMap());
         when(rankingService.getPlayerRank(Mockito.eq(2), anyMap())).thenReturn(1);
         when(rankingService.getPlayerRank(Mockito.anyInt(), anyMap())).thenReturn(2);
         when(playersDataReader.byName(Mockito.anyString())).thenReturn(mockedPlayer(2));
-        final RankingRequest request = new RankingRequest();
-        request.setPlayerName("Test Player2");
-        final List<PlayerRank> playerRanks = userRankingStrategy.execute(request);
-        assertNotNull(playerRanks);
-        assertEquals(1, playerRanks.size());
+        userRankingStrategy.setPlayerName("Test Player2");
+        final List<PlayerScoreCard> playerScoreCards = userRankingStrategy.execute();
+        assertNotNull(playerScoreCards);
+        assertEquals(1, playerScoreCards.size());
     }
 
     @Test
     public void testExecute_ThrowsExceptionWhenPlayerDoesNotExistInSystem() throws EloRankingSystemException {
-        when(scoreService.getAllScores()).thenReturn(mockedPlayerScoreMap());
+        when(scoreService.getPlayerScores()).thenReturn(mockedPlayerScoreMap());
         when(rankingService.getPlayerRank(Mockito.eq(2), anyMap())).thenReturn(1);
         when(rankingService.getPlayerRank(Mockito.anyInt(), anyMap())).thenReturn(2);
         when(playersDataReader.byName(Mockito.anyString())).thenReturn(null);
-        final RankingRequest request = new RankingRequest();
-        request.setPlayerName("Test Player2");
-        assertThrows(EloRankingSystemException.class, () -> userRankingStrategy.execute(request));
+        userRankingStrategy.setPlayerName("Test Player2");
+        assertThrows(PlayerNotFoundException.class, () -> userRankingStrategy.execute());
+    }
+
+    @Test
+    public void testExecute_ThrowsExceptionWhenPlayerNameNotSet() throws EloRankingSystemException {
+        assertThrows(InvalidPlayerNameException.class, () -> userRankingStrategy.execute());
     }
 
 }

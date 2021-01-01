@@ -7,6 +7,6 @@ import java.util.List;
  */
 public class RankingResponse {
 
-    private List<PlayerRank> playerRanks;
+    private List<PlayerScoreCard> playerScoreCards;
 
 }

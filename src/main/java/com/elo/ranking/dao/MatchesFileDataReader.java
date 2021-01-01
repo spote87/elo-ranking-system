@@ -47,6 +47,11 @@ public class MatchesFileDataReader implements MatchesDataReader {
         return Collections.emptyList();
     }
 
+    @Override
+    public List<Match> getMatches(final int playerId) {
+        return read().stream().filter(match -> match.getWinner() == playerId || match.getLoser() == playerId).collect(Collectors.toList());
+    }
+
     private List<Match> readData(final BufferedReader reader) {
         return reader.lines().filter(StringUtils::hasText).map(line -> getMatch(separator, line)
         ).filter(Objects::nonNull).collect(Collectors.toList());

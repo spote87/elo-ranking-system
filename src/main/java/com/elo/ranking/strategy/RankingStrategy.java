@@ -5,8 +5,8 @@ import com.elo.ranking.exception.EloRankingSystemException;
 /**
  * @author Shivaji Pote
  */
-public interface RankingStrategy<T,K> {
+public interface RankingStrategy<K> {
 
-    K execute(T request) throws EloRankingSystemException;
+    K execute() throws EloRankingSystemException;
 
 }

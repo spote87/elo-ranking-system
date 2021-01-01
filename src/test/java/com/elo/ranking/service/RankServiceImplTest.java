@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
@@ -26,7 +25,7 @@ class RankServiceImplTest {
     @Test
     void getRank_ReturnsRankOfSpecifiedPlayer() {
         final Map<Integer, Integer> scores = TestUtils.mockedPlayerScoreMap();
-        //when(scoreService.getAllScores()).thenReturn(scores);
+        //when(scoreService.getPlayerScores()).thenReturn(scores);
 
         final int rank1 = rankService.getPlayerRank(2, scores);
         assertEquals(1,rank1);
@@ -35,30 +34,37 @@ class RankServiceImplTest {
         final int rank2 = rankService.getPlayerRank(1,scores);
         assertEquals(2,rank2);
         final int rank3 = rankService.getPlayerRank(6,scores);
-        assertEquals(2,rank3);
+        assertEquals(3, rank3);
         final int rank7 = rankService.getPlayerRank(7,scores);
-        assertEquals(3,rank7);
+        assertEquals(4, rank7);
         final int rank33 = rankService.getPlayerRank(3,scores);
-        assertEquals(3,rank33);
+        assertEquals(4, rank33);
     }
 
     @Test
     void getAllRanks_ReturnsRankingsOfAllPlayers() {
-        //when(scoreService.getAllScores()).thenReturn(TestUtils.mockedPlayerScoreMap());
-        final SortedMap<Integer, List<Integer>> ranks = rankService.getAllPlayerRanks(TestUtils.mockedPlayerScoreMap());
+        //when(scoreService.getPlayerScores()).thenReturn(TestUtils.mockedPlayerScoreMap());
+        final SortedMap<Integer, Integer> ranks = rankService.getAllPlayerRanks(TestUtils.mockedPlayerScoreMap());
         assertNotNull(ranks);
         assertFalse(ranks.isEmpty());
-        final List<Integer> rank1 = ranks.get(1);
+        final Integer rank1 = ranks.get(1);
         assertNotNull(rank1);
-        assertFalse(rank1.isEmpty());
-        assertEquals(1, rank1.size());
-        final List<Integer> rank2 = ranks.get(2);
+        //assertFalse(rank1.isEmpty());
+        //score
+        assertEquals(3, rank1);
+        final Integer rank2 = ranks.get(2);
         assertNotNull(rank2);
-        assertFalse(rank2.isEmpty());
-        assertEquals(2, rank2.size());
-        final List<Integer> rank3 = ranks.get(1);
+        //assertFalse(rank2.isEmpty());
+        //score
+        assertEquals(2, rank2);
+        final Integer rank3 = ranks.get(3);
         assertNotNull(rank3);
-        assertFalse(rank3.isEmpty());
-        assertEquals(1, rank3.size());
+        //assertFalse(rank3.isEmpty());
+        assertEquals(1, rank3);
+
+        final Integer rank4 = ranks.get(4);
+        assertNotNull(rank4);
+        //assertFalse(rank3.isEmpty());
+        assertEquals(0, rank4);
     }
 }

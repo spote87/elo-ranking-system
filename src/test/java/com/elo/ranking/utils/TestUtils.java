@@ -2,7 +2,8 @@ package com.elo.ranking.utils;
 
 import com.elo.ranking.model.Match;
 import com.elo.ranking.model.Player;
-import com.elo.ranking.model.PlayerRank;
+import com.elo.ranking.model.PlayerScoreCard;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,24 +67,47 @@ public final class TestUtils {
         scoreMap.put(1,2);
         scoreMap.put(2,3);
         scoreMap.put(3,0);
-        scoreMap.put(6,1);
+        scoreMap.put(6, 1);
         scoreMap.put(7, 0);
-        scoreMap.put(8,3);
+        scoreMap.put(8, 3);
         return scoreMap;
     }
 
     public static Player mockedPlayer(final int playerId) {
-        return new Player(playerId, "Test"+playerId);
+        return new Player(playerId, "Test" + playerId);
     }
 
-    public static List<PlayerRank> mockedRankingData(final int noOfRecords) {
-        final List<PlayerRank> ranks = new ArrayList<>();
+    public static List<PlayerScoreCard> mockedRankingData(final int noOfRecords) {
+        final List<PlayerScoreCard> ranks = new ArrayList<>();
         int rank = noOfRecords;
-        for(int i=1;i<=noOfRecords;i++){
-            final Player player = new Player(i, "Test Player"+i);
-            final PlayerRank playerRank= new PlayerRank(player,i,rank--);
-            ranks.add(playerRank);
+        for (int i = 1; i <= noOfRecords; i++) {
+            final Player player = new Player(i, "Test Player" + i);
+            final PlayerScoreCard playerScoreCard = new PlayerScoreCard(player, i, rank--);
+            ranks.add(playerScoreCard);
         }
         return ranks;
     }
+
+    /*
+     * converts a Java object into JSON representation
+     */
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Reads file and returns {@link InputStream} instance.
+     *
+     * @param fileName name of the file
+     * @return {@code InputStream} instance
+     */
+    public static InputStream readFile(final String fileName) {
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return classLoader.getResourceAsStream(fileName);
+    }
+
 }

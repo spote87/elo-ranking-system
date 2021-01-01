@@ -9,6 +9,6 @@ public interface ScoreService {
 
     int getScore(int playerId);
 
-    Map<Integer, Integer> getAllScores();
+    Map<Integer, Integer> getPlayerScores();
 
 }

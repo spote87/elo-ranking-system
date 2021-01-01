@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Component
 @NoArgsConstructor
-public class RankingContext<T,K> {
+public class RankingContext<K> {
 
     @Setter
     private RankingStrategy strategy;
@@ -21,8 +21,8 @@ public class RankingContext<T,K> {
         this.strategy = strategy;
     }
 
-    public K executeStrategy(final T request) throws EloRankingSystemException {
-     return (K) strategy.execute(request);
+    public K executeStrategy() throws EloRankingSystemException {
+        return (K) strategy.execute();
     }
 
 }

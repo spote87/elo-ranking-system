@@ -55,7 +55,7 @@ public class ScoreServiceImplTest {
         final List<Player> mockedPlayers = TestUtils.mockedPlayersData();
         when(matchesDataReader.read()).thenReturn(mockedMatches);
         when(playersDataReader.readAll()).thenReturn(mockedPlayers);
-        final Map<Integer, Integer> playerScores = scoreService.getAllScores();
+        final Map<Integer, Integer> playerScores = scoreService.getPlayerScores();
         assertNotNull(playerScores);
         assertEquals(0, playerScores.get(3));
         assertEquals(3, playerScores.get(2));

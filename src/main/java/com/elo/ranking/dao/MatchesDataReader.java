@@ -15,4 +15,5 @@ public interface MatchesDataReader {
      */
     List<Match> read();
 
+    List<Match> getMatches(int playerId);
 }

@@ -32,7 +32,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public Map<Integer, Integer> getAllScores() {
+    public Map<Integer, Integer> getPlayerScores() {
         final List<Player> players = playersFileDataReader.readAll();
         final Map<Integer, Integer> scoreMap = new HashMap<>();
         for (final Player player : players) {

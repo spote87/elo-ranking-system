@@ -1,6 +1,5 @@
 package com.elo.ranking.service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
@@ -22,8 +21,9 @@ public interface RankService {
 
     /**
      * This method computes and returns rank of the all players. Rank is computed based on provided <em>players</em> and <em>scores</em> map.
+     *
      * @param scores Map containing player id and scores
-     * @return map containing <em>rank</em> and list of <em>scores</em>
+     * @return map containing <em>rank</em> and <em>score</em>
      */
-    SortedMap<Integer, List<Integer>> getAllPlayerRanks(Map<Integer,Integer> scores);
+    SortedMap<Integer, Integer> getAllPlayerRanks(Map<Integer, Integer> scores);
 }
