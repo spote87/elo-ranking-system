@@ -1,13 +1,20 @@
 package com.elo.ranking.exception;
 
 /**
- * @author Shivaji Pote (C62183)
+ * Exception class for player not found in system.
+ * 
+ * @author Shivaji Pote
  */
 public class PlayerNotFoundException extends EloRankingSystemException {
 
-    private static final long serialVersionUID = -2081504112282077965L;
+	private static final long serialVersionUID = -2081504112282077965L;
 
-    public PlayerNotFoundException(final String message) {
-        super(message);
-    }
+	/**
+	 * {@link PlayerNotFoundException} constructor
+	 * 
+	 * @param message exception message
+	 */
+	public PlayerNotFoundException(final String message) {
+		super(message);
+	}
 }

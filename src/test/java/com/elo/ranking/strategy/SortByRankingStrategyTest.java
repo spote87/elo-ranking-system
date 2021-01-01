@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Shivaji Pote (C62183)
+ * @author Shivaji Pote
  */
 @ExtendWith(MockitoExtension.class)
 class SortByRankingStrategyTest {

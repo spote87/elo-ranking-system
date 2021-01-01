@@ -36,7 +36,7 @@ public class PlayerRankingStrategyTest {
     private final PlayersDataReader playersDataReader = Mockito.mock(PlayersFileDataReader.class);
 
     @InjectMocks
-    private PlayerRankingStrategy userRankingStrategy;
+    private PlayerRankingStrategy playerRankingStrategy;
 
 
     @Test
@@ -45,8 +45,8 @@ public class PlayerRankingStrategyTest {
         when(rankingService.getPlayerRank(Mockito.eq(2), anyMap())).thenReturn(1);
         when(rankingService.getPlayerRank(Mockito.anyInt(), anyMap())).thenReturn(2);
         when(playersDataReader.byName(Mockito.anyString())).thenReturn(mockedPlayer(2));
-        userRankingStrategy.setPlayerName("Test Player2");
-        final List<PlayerScoreCard> playerScoreCards = userRankingStrategy.execute();
+        playerRankingStrategy.setPlayerName("Test Player2");
+        final List<PlayerScoreCard> playerScoreCards = playerRankingStrategy.execute();
         assertNotNull(playerScoreCards);
         assertEquals(1, playerScoreCards.size());
     }
@@ -57,13 +57,13 @@ public class PlayerRankingStrategyTest {
         when(rankingService.getPlayerRank(Mockito.eq(2), anyMap())).thenReturn(1);
         when(rankingService.getPlayerRank(Mockito.anyInt(), anyMap())).thenReturn(2);
         when(playersDataReader.byName(Mockito.anyString())).thenReturn(null);
-        userRankingStrategy.setPlayerName("Test Player2");
-        assertThrows(PlayerNotFoundException.class, () -> userRankingStrategy.execute());
+        playerRankingStrategy.setPlayerName("Test Player2");
+        assertThrows(PlayerNotFoundException.class, () -> playerRankingStrategy.execute());
     }
 
     @Test
     public void testExecute_ThrowsExceptionWhenPlayerNameNotSet() throws EloRankingSystemException {
-        assertThrows(InvalidPlayerNameException.class, () -> userRankingStrategy.execute());
+        assertThrows(InvalidPlayerNameException.class, () -> playerRankingStrategy.execute());
     }
 
 }

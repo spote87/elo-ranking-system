@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author Shivaji Pote (C62183)
+ * Strategy class for sorting by wins.
+ * @author Shivaji Pote
  */
 @RequiredArgsConstructor
 @Component
@@ -24,6 +25,10 @@ public class SortByWinsStrategy implements RankingStrategy<List<PlayerScoreCard>
     @Setter
     private String order;
 
+    /**
+     * This method sorts and returns players data by number of wins.
+     * @return list of {@link PlayerScoreCard}s
+     */
     @Override
     public List<PlayerScoreCard> execute() throws EloRankingSystemException {
         final List<PlayerScoreCard> scoreCards = scoreCardGenerator.getAll();

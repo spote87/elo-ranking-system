@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Model class for player's score card.
+ * 
  * @author Shivaji Pote
  */
 @Getter
@@ -16,20 +18,27 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlayerScoreCard {
 
-    public PlayerScoreCard(final Player player, final Integer score, final Integer rank) {
-        this.player = player;
-        this.score = score;
-        this.rank = rank;
-    }
+	/**
+	 * {@link PlayerScoreCard} constructor.
+	 * 
+	 * @param player {@link Player} instance
+	 * @param score  score of the player
+	 * @param rank   rank of the player
+	 */
+	public PlayerScoreCard(final Player player, final Integer score, final Integer rank) {
+		this.player = player;
+		this.score = score;
+		this.rank = rank;
+	}
 
-    private Player player;
+	private Player player;
 
-    private Integer score;
+	private Integer score;
 
-    private Integer rank;
+	private Integer rank;
 
-    private Integer wins;
+	private Integer wins;
 
-    private Integer losses;
+	private Integer losses;
 
 }

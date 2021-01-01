@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Shivaji Pote (C62183)
+ * @author Shivaji Pote
  */
 @ExtendWith(MockitoExtension.class)
 class AllUsersRankingStrategyTest {
@@ -39,7 +39,7 @@ class AllUsersRankingStrategyTest {
     private AllUsersRankingStrategy allUsersRankingStrategy;
 
     @Test
-    public void testExecute_ReturnsRankingsOfAllPlayers() throws EloRankingSystemException {
+    void testExecute_ReturnsRankingsOfAllPlayers() throws EloRankingSystemException {
         when(scoreService.getPlayerScores()).thenReturn(mockedPlayerScoreMap());
         when(rankingService.getPlayerRank(Mockito.eq(2), anyMap())).thenReturn(1);
         when(rankingService.getPlayerRank(Mockito.eq(8), anyMap())).thenReturn(1);

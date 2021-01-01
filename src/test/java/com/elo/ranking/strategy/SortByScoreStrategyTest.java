@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Shivaji Pote (C62183)
+ * @author Shivaji Pote
  */
 @ExtendWith(MockitoExtension.class)
 class SortByScoreStrategyTest {

@@ -17,59 +17,75 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * This {@link MatchesDataReader} implementation reads matches data from files.
+ *
  * @author Shivaji Pote
  */
 @Log4j2
 @Repository
 public class MatchesFileDataReader implements MatchesDataReader {
 
-    @Value("${matches.file.data.separator}")
-    private String separator;
+	@Value("${matches.file.data.separator}")
+	private String separator;
 
-    @Value("${matches.input.file.path}")
-    private String dataFile;
+	@Value("${matches.input.file.path}")
+	private String dataFile;
 
-    private final EloFileReader eloFileReader;
+	private final EloFileReader eloFileReader;
 
-    public MatchesFileDataReader(final EloFileReader eloFileReader) {
-        this.eloFileReader = eloFileReader;
-    }
+	/**
+	 * {@link MatchesFileDataReader} constructor.
+	 *
+	 * @param eloFileReader file reader instance
+	 */
+	public MatchesFileDataReader(final EloFileReader eloFileReader) {
+		this.eloFileReader = eloFileReader;
+	}
 
-    @Override
-    public List<Match> read() {
-        log.debug("Reading matches data from file {}", dataFile);
-        try (final InputStream dataStream = eloFileReader.readResourceAsInputStream(dataFile)) {
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(dataStream));
-            return readData(reader);
-        } catch (final IOException e) {
-            log.error("Failed to readAll matches data", e);
-        }
-        return Collections.emptyList();
-    }
+	/**
+	 * This method reads all matches data from matches datasource file configured at
+	 * {@code matches.input.file.path}.
+	 */
+	@Override
+	public List<Match> read() {
+		log.debug("Reading matches data from file {}", dataFile);
+		try (final InputStream dataStream = eloFileReader.readResourceAsInputStream(dataFile)) {
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(dataStream));
+			return readData(reader);
+		} catch (final IOException e) {
+			log.error("Failed to readAll matches data", e);
+		}
+		return Collections.emptyList();
+	}
 
-    @Override
-    public List<Match> getMatches(final int playerId) {
-        return read().stream().filter(match -> match.getWinner() == playerId || match.getLoser() == playerId).collect(Collectors.toList());
-    }
+	/**
+	 * This method reads matches data for specified player from matches datasource
+	 * file configured at {@code matches.input.file.path}.
+	 */
+	@Override
+	public List<Match> getMatches(final int playerId) {
+		return read().stream().filter(match -> match.getWinner() == playerId || match.getLoser() == playerId)
+				.collect(Collectors.toList());
+	}
 
-    private List<Match> readData(final BufferedReader reader) {
-        return reader.lines().filter(StringUtils::hasText).map(line -> getMatch(separator, line)
-        ).filter(Objects::nonNull).collect(Collectors.toList());
-    }
+	private List<Match> readData(final BufferedReader reader) {
+		return reader.lines().filter(StringUtils::hasText).map(line -> getMatch(separator, line))
+				.filter(Objects::nonNull).collect(Collectors.toList());
+	}
 
-    private Match getMatch(final String separator, final String line) {
-        final String[] data = line.split(separator);
-        if (data.length >= 2) {
-            final Match match = new Match();
-            try {
-                match.setWinner(Integer.parseInt(data[0]));
-                match.setLoser(Integer.parseInt(data[1]));
-                return match;
-            } catch (final NumberFormatException e) {
-                log.error("Invalid input on line {}. Ignoring this input line", line, e);
-            }
-        }
-        return null;
-    }
+	private Match getMatch(final String separator, final String line) {
+		final String[] data = line.split(separator);
+		if (data.length >= 2) {
+			final Match match = new Match();
+			try {
+				match.setWinner(Integer.parseInt(data[0]));
+				match.setLoser(Integer.parseInt(data[1]));
+				return match;
+			} catch (final NumberFormatException e) {
+				log.error("Invalid input on line {}. Ignoring this input line", line, e);
+			}
+		}
+		return null;
+	}
 
 }

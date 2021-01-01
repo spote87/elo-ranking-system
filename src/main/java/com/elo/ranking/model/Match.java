@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Model class for matches data.
+ * 
  * @author Shivaji Pote
  */
 @Getter
@@ -14,8 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Match {
 
-    private int winner;
+	private int winner;
 
-    private int loser;
+	private int loser;
 
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Strategy class for sorting by score.
  * @author Shivaji Pote
  */
 @RequiredArgsConstructor
@@ -24,6 +25,10 @@ public class SortByScoreStrategy implements RankingStrategy<List<PlayerScoreCard
     @Setter
     private String order;
 
+    /**
+     * This method sorts and returns players data by their scores.
+     * @return list of {@link PlayerScoreCard}s
+     */
     @Override
     public List<PlayerScoreCard> execute() {
         final List<PlayerScoreCard> scoreCards = scoreCardGenerator.getAll();

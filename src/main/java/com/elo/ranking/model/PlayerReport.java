@@ -8,7 +8,9 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * @author Shivaji Pote (C62183)
+ * Model class for player's report.
+ * 
+ * @author Shivaji Pote
  */
 @Getter
 @Setter
@@ -16,19 +18,26 @@ import java.util.List;
 @NoArgsConstructor
 public class PlayerReport {
 
-    private Player player;
+	private Player player;
 
-    /**
-     * Map of player and result of the match
-     */
-    private List<MatchResult> matchResults;
+	/**
+	 * Map of player and result of the match
+	 */
+	private List<MatchResult> matchResults;
 
-    @Setter
-    @Getter
-    public static class MatchResult {
+	/**
+	 * Model class for match result holding opposition player data and result of the
+	 * match.
+	 * 
+	 * @author Shivaji Pote
+	 *
+	 */
+	@Setter
+	@Getter
+	public static class MatchResult {
 
-        private Player opposition;
+		private Player opposition;
 
-        private String result;
-    }
+		private String result;
+	}
 }

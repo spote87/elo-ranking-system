@@ -13,24 +13,33 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author Shivaji Pote (C62183)
+ * Strategy class for sorting by ranking.
+ * 
+ * @author Shivaji Pote
  */
 @RequiredArgsConstructor
 @Component
 public class SortByRankingStrategy implements RankingStrategy<List<PlayerScoreCard>> {
 
-    private final ScoreCardGenerator scoreCardGenerator;
+	private final ScoreCardGenerator scoreCardGenerator;
 
-    @Setter
-    private String order;
+	@Setter
+	private String order;
 
-    @Override
-    public List<PlayerScoreCard> execute() throws EloRankingSystemException {
-        final List<PlayerScoreCard> scoreCards = scoreCardGenerator.getAll();
-        return scoreCards.stream().sorted(getComparator()).collect(Collectors.toList());
-    }
+	/**
+	 * This method sorts and returns players data by their ranks.
+	 * 
+	 * @return list of {@link PlayerScoreCard}s
+	 */
+	@Override
+	public List<PlayerScoreCard> execute() throws EloRankingSystemException {
+		final List<PlayerScoreCard> scoreCards = scoreCardGenerator.getAll();
+		return scoreCards.stream().sorted(getComparator()).collect(Collectors.toList());
+	}
 
-    private Comparator<PlayerScoreCard> getComparator() {
-        return (StringUtils.hasText(order) && order.equalsIgnoreCase("desc")) ? Comparator.comparingInt(PlayerScoreCard::getRank).reversed() : Comparator.comparingInt(PlayerScoreCard::getRank);
-    }
+	private Comparator<PlayerScoreCard> getComparator() {
+		return (StringUtils.hasText(order) && order.equalsIgnoreCase("desc"))
+				? Comparator.comparingInt(PlayerScoreCard::getRank).reversed()
+				: Comparator.comparingInt(PlayerScoreCard::getRank);
+	}
 }

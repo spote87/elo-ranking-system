@@ -18,48 +18,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Shivaji Pote (C62183)
+ * Strategy class for report generation.
+ * 
+ * @author Shivaji Pote
  */
 @RequiredArgsConstructor
 @Component
 public class ReportGenerationStrategy implements RankingStrategy<PlayerReport> {
 
-    @Setter
-    private String playerName;
+	@Setter
+	private String playerName;
 
-    private final PlayersDataReader playersDataReader;
+	private final PlayersDataReader playersDataReader;
 
-    private final MatchesDataReader matchesDataReader;
+	private final MatchesDataReader matchesDataReader;
 
-    @Override
-    public PlayerReport execute() throws EloRankingSystemException {
-        if (StringUtils.hasText(playerName)) {
-            final Player player = playersDataReader.byName(playerName);
-            if (player == null) {
-                throw new PlayerNotFoundException("Player not found in system");
-            }
-            return getPlayerReport(player);
-        }
-        throw new InvalidPlayerNameException("Invalid input player name");
-    }
+	/**
+	 * This method generates report for provided player.
+	 * 
+	 * @return {@link PlayerReport} instance
+	 * @throws EloRankingSystemException if player name is invalid or player does
+	 *                                   not exist in system
+	 */
+	@Override
+	public PlayerReport execute() throws EloRankingSystemException {
+		if (StringUtils.hasText(playerName)) {
+			final Player player = playersDataReader.byName(playerName);
+			if (player == null) {
+				throw new PlayerNotFoundException("Player not found in system");
+			}
+			return getPlayerReport(player);
+		}
+		throw new InvalidPlayerNameException("Invalid input player name");
+	}
 
-    private PlayerReport getPlayerReport(final Player player) {
-        final PlayerReportBuilder builder = new PlayerReportBuilder(new PlayerReport());
-        builder.player(player);
-        final List<Match> matches = matchesDataReader.getMatches(player.getId());
-        final List<PlayerReport.MatchResult> results = new ArrayList<>();
-        matches.forEach(match -> {
-            final PlayerReport.MatchResult matchResult = new PlayerReport.MatchResult();
-            if (match.getWinner() == player.getId()) {
-                matchResult.setResult("Won");
-                matchResult.setOpposition(playersDataReader.byId(match.getLoser()));
-            } else {
-                matchResult.setResult("Lost");
-                matchResult.setOpposition(playersDataReader.byId(match.getWinner()));
-            }
-            results.add(matchResult);
-        });
-        builder.matchResults(results);
-        return builder.build();
-    }
+	private PlayerReport getPlayerReport(final Player player) {
+		final PlayerReportBuilder builder = new PlayerReportBuilder(new PlayerReport());
+		builder.player(player);
+		final List<Match> matches = matchesDataReader.getMatches(player.getId());
+		final List<PlayerReport.MatchResult> results = new ArrayList<>();
+		matches.forEach(match -> {
+			final PlayerReport.MatchResult matchResult = new PlayerReport.MatchResult();
+			if (match.getWinner() == player.getId()) {
+				matchResult.setResult("Won");
+				matchResult.setOpposition(playersDataReader.byId(match.getLoser()));
+			} else {
+				matchResult.setResult("Lost");
+				matchResult.setOpposition(playersDataReader.byId(match.getWinner()));
+			}
+			results.add(matchResult);
+		});
+		builder.matchResults(results);
+		return builder.build();
+	}
 }

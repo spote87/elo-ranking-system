@@ -24,7 +24,7 @@ import static com.elo.ranking.utils.TestUtils.*;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Shivaji Pote (C62183)
+ * @author Shivaji Pote
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = EloRankingApplication.class)
 @AutoConfigureMockMvc

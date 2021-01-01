@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 /**
+ * Ranking strategy class for all players.
+ *
  * @author Shivaji Pote
  */
 @Log4j2
@@ -22,27 +23,33 @@ import java.util.Map;
 @Component("allUsersRankingStrategy")
 public class AllUsersRankingStrategy implements RankingStrategy<List<PlayerScoreCard>> {
 
-    private final RankService rankingService;
+	private final RankService rankingService;
 
-    private final ScoreService scoreService;
+	private final ScoreService scoreService;
 
-    private final PlayersDataReader playersDataReader;
+	private final PlayersDataReader playersDataReader;
 
-    @Override
-    public List<PlayerScoreCard> execute() throws EloRankingSystemException {
-        final Map<Integer, Integer> scores = scoreService.getPlayerScores();
-        log.debug("Fetching rankings of all players");
-        return getAllPlayerRanks(scores);
-    }
+	/**
+	 * This method will compute rankings for all the players.
+	 *
+	 * @return list of {@link PlayerScoreCard}
+	 */
+	@Override
+	public List<PlayerScoreCard> execute() throws EloRankingSystemException {
+		final Map<Integer, Integer> scores = scoreService.getPlayerScores();
+		log.debug("Fetching rankings of all players");
+		return getAllPlayerRanks(scores);
+	}
 
-    private List<PlayerScoreCard> getAllPlayerRanks(final Map<Integer, Integer> scores) {
-        final List<PlayerScoreCard> playerScoreCards = new ArrayList<>();
-        scores.entrySet().forEach(entry -> {
-            final Integer rank = rankingService.getPlayerRank(entry.getKey(), scores);
-            final PlayerScoreCard playerScoreCard = new PlayerScoreCard(playersDataReader.byId(entry.getKey()), entry.getValue(), rank);
-            playerScoreCards.add(playerScoreCard);
-        });
-        return playerScoreCards;
-    }
+	private List<PlayerScoreCard> getAllPlayerRanks(final Map<Integer, Integer> scores) {
+		final List<PlayerScoreCard> playerScoreCards = new ArrayList<>();
+		scores.entrySet().forEach(entry -> {
+			final Integer rank = rankingService.getPlayerRank(entry.getKey(), scores);
+			final PlayerScoreCard playerScoreCard = new PlayerScoreCard(playersDataReader.byId(entry.getKey()),
+					entry.getValue(), rank);
+			playerScoreCards.add(playerScoreCard);
+		});
+		return playerScoreCards;
+	}
 
 }

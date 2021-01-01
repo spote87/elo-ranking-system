@@ -5,23 +5,26 @@ import com.elo.ranking.model.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Strategy class for sorting players data on player id.
+ * 
  * @author Shivaji Pote
  */
 @RequiredArgsConstructor
 @Component("playerSortingStrategy")
 public class DefaultPlayersSortingStrategy implements RankingStrategy<List<Player>> {
 
-    private final PlayersDataReader playersDataReader;
+	private final PlayersDataReader playersDataReader;
 
-
-    @Override
-    public List<Player> execute() {
-        final List<Player> players = new ArrayList<>();
-        return playersDataReader.readAll().stream().sorted().collect(Collectors.toList());
-    }
+	/**
+	 * This method sorts players on player id and returns the player list.
+	 * @return list of {@link Player}s
+	 */
+	@Override
+	public List<Player> execute() {
+		return playersDataReader.readAll().stream().sorted().collect(Collectors.toList());
+	}
 }

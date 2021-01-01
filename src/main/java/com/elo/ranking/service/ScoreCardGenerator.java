@@ -13,35 +13,41 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Shivaji Pote (C62183)
+ * This class will generate score card for all/specified player.
+ *
+ * @author Shivaji Pote
  */
 @Component
 @Log4j2
 @RequiredArgsConstructor
 public class ScoreCardGenerator {
 
-    private final PlayersDataReader playersDataReader;
+	private final PlayersDataReader playersDataReader;
 
-    private final MatchesDataReader matchesDataReader;
+	private final MatchesDataReader matchesDataReader;
 
-    private final ScoreService scoreService;
+	private final ScoreService scoreService;
 
-    private final RankService rankService;
+	private final RankService rankService;
 
-
-    public List<PlayerScoreCard> getAll() {
-        log.debug("Getting score card of all the players");
-        final Map<Integer, Integer> playerScores = scoreService.getPlayerScores();
-        final List<PlayerScoreCard> scoreCards = new ArrayList<>();
-        playerScores.entrySet().forEach(player -> {
-            final PlayerScoreCardBuilder builder = new PlayerScoreCardBuilder(new PlayerScoreCard());
-            builder.player(playersDataReader.byId(player.getKey()));
-            builder.rank(rankService.getPlayerRank(player.getKey(), playerScores));
-            builder.score(player.getValue());
-            builder.wins(player.getValue());//wins=score
-            builder.losses(matchesDataReader.getMatches(player.getKey()).size() - player.getValue());
-            scoreCards.add(builder.build());
-        });
-        return scoreCards;
-    }
+	/**
+	 * This method generates score car for all the players.
+	 *
+	 * @return {@link PlayerScoreCard} list
+	 */
+	public List<PlayerScoreCard> getAll() {
+		log.debug("Getting score card of all the players");
+		final Map<Integer, Integer> playerScores = scoreService.getPlayerScores();
+		final List<PlayerScoreCard> scoreCards = new ArrayList<>();
+		playerScores.entrySet().forEach(player -> {
+			final PlayerScoreCardBuilder builder = new PlayerScoreCardBuilder(new PlayerScoreCard());
+			builder.player(playersDataReader.byId(player.getKey()));
+			builder.rank(rankService.getPlayerRank(player.getKey(), playerScores));
+			builder.score(player.getValue());
+			builder.wins(player.getValue());// wins=score
+			builder.losses(matchesDataReader.getMatches(player.getKey()).size() - player.getValue());
+			scoreCards.add(builder.build());
+		});
+		return scoreCards;
+	}
 }
