@@ -4,11 +4,10 @@ import com.elo.ranking.exception.InvalidSortingStrategy;
 import com.elo.ranking.model.PlayerScoreCard;
 import com.elo.ranking.strategy.*;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * Factory class for determining sorting strategy. Class is not made abstract
@@ -20,7 +19,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class SortingFactory {
 
-	private final RankingStrategy<List<PlayerScoreCard>> playerSortingStrategy;
+	private final RankingStrategy playerSortingStrategy;
 
 	private final SortByScoreStrategy sortByScoreStrategy;
 
